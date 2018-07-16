@@ -1,45 +1,86 @@
 package com.ispirit.digitalsky.domain;
-import org.springframework.data.annotation.Id;
 
-public class Person{
 
-   @Id
-    private String id;
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "DS_PERSON")
+public class Person {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @Column(name = "FIRST_NAME")
     private String firstName;
+
+    @Column(name = "LAST_NAME")
     private String lastName;
+
+    @Column(name = "EMAIL")
     private String email;
+
+    @Column(name = "MOBILE_NUMBER")
+    private String mobileNumber;
+
+    @Column(name = "COUNTRY")
+    private String country;
+
+    @Column(name = "AGE_IN_MONTHS")
+    private int ageInMonths;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "PILOT_ID")
+    private List<PersonAddress> addressList;
+
+    private Person() {
+
+    }
+
+    public Person(String firstName, String lastName, String email, String mobileNumber, String country, int ageInMonths, List<PersonAddress> addressList) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.mobileNumber = mobileNumber;
+        this.country = country;
+        this.ageInMonths = ageInMonths;
+        this.addressList = addressList;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
 
-    public String getId() {
-        return id;
+    public String getCountry() {
+        return country;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public int getAgeInMonths() {
+        return ageInMonths;
     }
 
+    public List<PersonAddress> getAddressList() {
+        return addressList;
+    }
 
+    public void setAddressList(List<PersonAddress> addressList) {
+        this.addressList = addressList;
+    }
 }
